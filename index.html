@@ -1,0 +1,74 @@
+<!DOCTYPE>
+<html>
+<head></head>
+<body>
+	<script>
+	// Create the canvas
+var canvas = document.createElement('canvas');
+var ctx = canvas.getContext('2d');
+canvas.width = 512;
+canvas.height = 480;
+document.body.appendChild(canvas);
+
+//Background image
+var bgReady = false;
+var bgImage = new Image();
+bgImage.onload = function() {
+  bgReady = true;
+  // main();
+};
+bgImage.src = 'img/background.png';
+
+var render = function() {
+  //if (bgReady) {
+  ctx.drawImage(bgImage, 0, 0);
+  //}
+  ctx.beginPath();
+  //Winner
+  ctx.fillStyle = 'yellow';
+  var circleWin = {
+    x: 100, //圆心的x轴坐标值
+    y: 100, //圆心的y轴坐标值
+    r: 50, //圆的半径
+  };
+  //沿着坐标点(100,100)为圆心、半径为50px的圆的顺时针方向绘制弧线
+  ctx.arc(circleWin.x, circleWin.y, circleWin.r, 0, Math.PI * 2, false);
+  //按照指定的路径绘制弧线
+  ctx.fill();
+  ctx.closePath();
+  //food
+  ctx.beginPath();
+  ctx.fillStyle = 'red';
+  var circleFood = {
+    x: 50, //圆心的x轴坐标值
+    y: 50, //圆心的y轴坐标值
+    r: 10, //圆的半径
+  };
+  //沿着坐标点(100,100)为圆心、半径为50px的圆的顺时针方向绘制弧线
+  ctx.arc(circleFood.x, circleFood.y, circleFood.r, 0, Math.PI * 2, false);
+  //按照指定的路径绘制弧线
+  ctx.fill();
+  ctx.closePath();
+
+  // ctx.beginPath();
+  //     //设置弧线的颜色为蓝色
+  //     ctx.strokeStyle = "blue";
+  //     var circle = {
+  //         x : 100,    //圆心的x轴坐标值
+  //         y : 100,    //圆心的y轴坐标值
+  //         r : 50      //圆的半径
+  //     };
+  //     //沿着坐标点(100,100)为圆心、半径为50px的圆的顺时针方向绘制弧线
+  //     ctx.arc(circle.x, circle.y, circle.r, 0, Math.PI / 2, false);
+  //     //按照指定的路径绘制弧线
+  //     ctx.stroke();
+};
+
+var main = function() {
+  render();
+  requestAnimationFrame(main);
+};
+main();
+</script>
+</body>
+</html>
