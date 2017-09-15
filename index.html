@@ -19,7 +19,7 @@ bgImage.onload = function() {
 bgImage.src = 'img/background.png';
 
 var hero = {
-  speed: 1,
+  speed: 250,
   x: canvas.width / 2, //圆心的x轴坐标值
   y: canvas.height / 2, //圆心的y轴坐标值
   r: 20, //圆的半径
@@ -30,6 +30,7 @@ var food = {
   y: 50, //圆心的y轴坐标值
   r: 5, //圆的半径
 };
+var count = 0;
 //边境值判断
 var bound = (obj, r, wall) => {
   const obstacle = r + wall;
@@ -48,8 +49,7 @@ var render = () => {
   ctx.fillStyle = 'yellow';
   //沿着坐标点(100,100)为圆心、半径为50px的圆的顺时针方向绘制弧
   bound(hero, hero.r, 30);
-  console.log('hero ', hero);
-  ctx.arc(hero.x, hero.y, hero.r, 0, Math.PI * 2, false);
+  ctx.arc(hero.x, hero.y, hero.r, 0, Math.PI * 1.8, false);
   //按照指定的路径绘制弧线
   ctx.fill();
   ctx.closePath();
@@ -63,6 +63,11 @@ var render = () => {
   //按照指定的路径绘制弧线
   ctx.fill();
   ctx.closePath();
+
+  //score
+  ctx.fillStyle = '#000';
+  ctx.font = '20px bold';
+  ctx.fillText(`Score: ${count}`, 40, 50);
 };
 //add key method
 var keysDown = {};
@@ -72,23 +77,26 @@ addEventListener('keydown', function(e) {
 addEventListener('keyup', function(e) {
   delete keysDown[e.keyCode];
 });
-var update = function() {
+var update = function(modifier) {
   // hero position
+  // let realSpeed = hero.speed * modifier;
+  let realSpeed = 4;
+  console.log('real', realSpeed);
   if (38 in keysDown) {
     // Player holding up
-    hero.y -= hero.speed;
+    hero.y -= realSpeed;
   }
   if (40 in keysDown) {
     // Player holding down
-    hero.y += hero.speed;
+    hero.y += realSpeed;
   }
   if (37 in keysDown) {
     // Player holding left
-    hero.x -= hero.speed;
+    hero.x -= realSpeed;
   }
   if (39 in keysDown) {
     // Player holding right
-    hero.x += hero.speed;
+    hero.x += realSpeed;
   }
 
   // Are they touching?
@@ -98,7 +106,7 @@ var update = function() {
     hero.y <= food.y + 15 &&
     food.y <= hero.y + 15
   ) {
-    // ++monstersCaught;
+    ++count;
     reset();
   }
 };
@@ -107,12 +115,12 @@ var reset = () => {
   hero.y = canvas.height / 2;
 
   // Throw the monster somewhere on the screen randomly
-  food.x = 32 + Math.random() * (canvas.width - 64);
-  food.y = 32 + Math.random() * (canvas.height - 64);
+  food.x = 32 + Math.random() * (canvas.width - 70);
+  food.y = 32 + Math.random() * (canvas.height - 70);
 };
 var main = function() {
   render();
-  update();
+  update(1000);
   requestAnimationFrame(main);
 };
 main();
